@@ -122,6 +122,10 @@ services:
       HF_HUB_DOWNLOAD_TIMEOUT: "180"
       HF_TOKEN: "${HF_TOKEN:-}"
 
+      # Offline model source mounted from the host repo or another local path.
+      USE_LOCAL_MODELS: "${USE_LOCAL_MODELS:-0}"
+      LOCAL_MODEL_SOURCE: "/opt/offline-models"
+
       # Toggle the auto-download flow on first start
       SKIP_MODEL_DOWNLOAD: "${SKIP_MODEL_DOWNLOAD:-0}"
       SKIP_ABLITERATED: "${SKIP_ABLITERATED:-0}"
@@ -141,6 +145,7 @@ services:
     # picks up the latest scripts on every recreate.
     volumes:
       - ./workspace:/workspace/ComfyUI
+      - ${LOCAL_MODEL_SOURCE_HOST:-./modelscope}:/opt/offline-models:ro
       - ./entrypoint.sh:/usr/local/bin/entrypoint.sh:ro
       - ./download_models.py:/usr/local/bin/download_models.py:ro
 
